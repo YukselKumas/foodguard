@@ -1,4 +1,5 @@
 'use client'
+import { Suspense } from 'react'
 import { useEffect, useState } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { supabase } from '@/lib/supabase'
@@ -7,7 +8,7 @@ import toast from 'react-hot-toast'
 
 const CATEGORIES = [...new Set(QUESTIONS.map(q => q.category))]
 
-export default function NewAuditPage() {
+function NewAuditForm() {
   const router = useRouter()
   const params = useSearchParams()
   const [companies, setCompanies] = useState<any[]>([])
@@ -72,7 +73,6 @@ export default function NewAuditPage() {
 
   return (
     <div className="flex h-screen overflow-hidden">
-      {/* Sol panel */}
       <div className="w-52 border-r border-gray-100 bg-white flex flex-col overflow-y-auto">
         <div className="p-4 border-b border-gray-100">
           <div className="text-xs font-bold text-gray-400 uppercase mb-2">İlerleme</div>
@@ -102,7 +102,6 @@ export default function NewAuditPage() {
         </div>
       </div>
 
-      {/* Ana içerik */}
       <div className="flex-1 overflow-y-auto p-6">
         <div className="bg-white rounded-xl border border-gray-100 p-4 mb-6 flex gap-4 items-end">
           <div className="flex-1">
@@ -170,5 +169,13 @@ export default function NewAuditPage() {
         </div>
       </div>
     </div>
+  )
+}
+
+export default function NewAuditPage() {
+  return (
+    <Suspense fallback={<div className="p-8 text-gray-400">Yükleniyor...</div>}>
+      <NewAuditForm />
+    </Suspense>
   )
 }
